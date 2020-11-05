@@ -1,4 +1,4 @@
-export const ApplicationName = "FDS";
+export const ApplicationName = "FDS.WebUI";
 
 export const QueryParameterNames = {
   ReturnUrl: "returnUrl",

@@ -13,12 +13,12 @@ namespace FDS.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseCosmos(configuration["CosmosDB:Uri"], configuration["CosmosDB:PrimaryKey"], configuration["CosmosDB:Name"]));
+                options.UseCosmos(configuration["CosmosDB:Uri"], configuration["CosmosDB:PrimaryKey"], configuration["CosmosDB:Name"]));
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddDefaultIdentity<ApplicationUser>()
-                .AddRoles<ChannelRole>()
+                //.AddRoles<ChannelRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()

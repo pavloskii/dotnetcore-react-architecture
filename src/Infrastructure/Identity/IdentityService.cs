@@ -9,12 +9,18 @@ namespace FDS.Infrastructure.Identity
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ChannelRole> _roleManager;
+        //private readonly RoleManager<ChannelRole> _roleManager;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, RoleManager<ChannelRole> roleManager)
+        public IdentityService(UserManager<ApplicationUser> userManager)
+            //, RoleManager<ChannelRole> roleManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
+            //_roleManager = roleManager;
+        }
+
+        public Task<Result> CreateRoleAsync(string roleName)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
@@ -49,11 +55,11 @@ namespace FDS.Infrastructure.Identity
             return result.ToApplicationResult();
         }
 
-        public async Task<Result> CreateRoleAsync(string roleName)
-        {
-             var result = await _roleManager.CreateAsync(new ChannelRole(roleName));
+        //public async Task<Result> CreateRoleAsync(string roleName)
+        //{
+        //     var result = await _roleManager.CreateAsync(new ChannelRole(roleName));
 
-            return result.ToApplicationResult();
-        }
+        //    return result.ToApplicationResult();
+        //}
     }
 }

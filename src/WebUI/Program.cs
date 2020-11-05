@@ -24,10 +24,10 @@ namespace FDS.WebUI
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    var roleManager = services.GetRequiredService<RoleManager<ChannelRole>>();
+                    //var roleManager = services.GetRequiredService<RoleManager<ChannelRole>>();
 
                     await context.Database.EnsureCreatedAsync();
-                    await ApplicationDbContextSeed.SeedIdentityRolesAsync(roleManager);
+                    //await ApplicationDbContextSeed.SeedIdentityRolesAsync(roleManager);
                     await ApplicationDbContextSeed.SeedDefaultUsersAsync(userManager);
                     await ApplicationDbContextSeed.SeedSampleDataAsync(context);
                 }
