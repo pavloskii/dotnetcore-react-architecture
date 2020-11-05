@@ -56,7 +56,7 @@
   },
   "codeGenerators": {
     "openApiToTypeScriptClient": {
-      "className": "{controller}Client",
+      "className": "{controller}Api",
       "moduleName": "",
       "namespace": "",
       "typeScriptVersion": 4,
@@ -110,7 +110,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "ClientApp/src/api/FDS-api.ts"
+      "output": "ClientApp/src/api/apiService.ts"
     }
   }
 }

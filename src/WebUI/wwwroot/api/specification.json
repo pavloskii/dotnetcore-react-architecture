@@ -77,7 +77,7 @@
     "securitySchemes": {
       "JWT": {
         "type": "apiKey",
-        "description": "Type into the textbox: Bearer {your JWT token}.",
+        "description": "Bearer {JWT token}.",
         "name": "Authorization",
         "in": "header"
       }
