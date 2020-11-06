@@ -1,9 +1,6 @@
 import * as React from "react";
 
-const useAsync = <T, E = string>(
-  asyncFunction: () => Promise<T>,
-  immediate = true
-) => {
+const useAsync = <T, E = string>(asyncFunction: () => Promise<T>, immediate = true) => {
   const [status, setStatus] = React.useState<
     "idle" | "pending" | "success" | "error"
   >("idle");
@@ -21,6 +18,7 @@ const useAsync = <T, E = string>(
         setStatus("success");
       })
       .catch((error: any) => {
+        console.log(error)
         setError(error);
         setStatus("error");
       });

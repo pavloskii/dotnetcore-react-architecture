@@ -8,10 +8,6 @@ import {
 } from "./constants/apiAuthorizationConstants";
 import { useAuth } from "./context/AuthContext";
 
-function Loader() {
-  return <h1>Loading App</h1>;
-}
-
 const App: React.FC = () => {
   const { user } = useAuth();
 

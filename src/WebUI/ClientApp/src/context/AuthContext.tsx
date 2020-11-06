@@ -1,35 +1,28 @@
 import * as React from "react";
 import { User } from "oidc-client";
-import { useAuthServiceAsync } from "../hooks/useAuthServiceAsync";
+import { useAsync } from "../hooks/useAsync";
+import { authService } from "../api/authService";
 
 type AuthContextProps = {
-  user: User;
+  user: User | null;
   login: () => Promise<void>;
-  loginCallback: () => Promise<User>;
+  loginCallback: () => Promise<void>;
 };
 
 const AuthContext = React.createContext<Partial<AuthContextProps>>({});
 
-const AuthProvider: React.FC = () => {
-  const {
-    authService,
-    error,
-    setUser,
-    status,
-    user
-  } = useAuthServiceAsync(true);
+const AuthProvider: React.FC = ({ children }) => {
+  const { error, status, data: user, setData } = useAsync(
+    authService.getUser,
+    true
+  );
 
-  const login = React.useCallback(() => authService.current?.login(), [
-    authService
-  ]);
+  const login = React.useCallback(() => authService.login(), []);
 
-  const loginCallback = React.useCallback(async () => {
-    let user: User | null = null;
-    if (authService !== undefined) {
-      user = await authService.current.loginCallback();
-    }
-    setUser(user);
-  }, [setUser, authService]);
+  const loginCallback = React.useCallback(
+    () => authService.loginCallback().then((user) => setData(user)),
+    [setData]
+  );
 
   const value = React.useMemo(() => ({ user, login, loginCallback }), [
     user,
@@ -38,15 +31,17 @@ const AuthProvider: React.FC = () => {
   ]);
 
   if (status === "idle" || status === "pending") {
-    return <div>Loading</div>;
+    return <h1>Loading</h1>;
   }
 
   if (error !== null) {
-    return <h1>{error}</h1>;
+    return <h1>{JSON.stringify(error)}</h1>;
   }
 
   if (status === "success") {
-    return <AuthContext.Provider value={value} />;
+    return (
+      <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    );
   }
 
   throw new Error(`Unhandled status: ${status}`);
@@ -55,7 +50,7 @@ const AuthProvider: React.FC = () => {
 const useAuth = () => {
   const context = React.useContext(AuthContext);
   if (context === undefined) {
-    throw new Error(`useAuth must be used within a AuthProvider`);
+    throw new Error("useAuth must be used within a AuthProvider");
   }
   return context;
 };

@@ -3,23 +3,9 @@ import { Link } from "react-router-dom";
 import "./Landing.scss";
 import landingImage from "../../assets/images/landing.svg";
 import { ApplicationPaths } from "../../constants/apiAuthorizationConstants";
-import { AuthService } from "../../api/authService";
-import { useAsync } from "../../hooks/useAsync";
 
 const Landing: React.FC = () => {
-  const authService = React.useRef<AuthService | null>();
-  const { error, status, value } = useAsync(AuthService.create, true);
-
-  React.useEffect(() => {
-    if (status === "success") {
-      console.log(value);
-      authService.current = value;
-    }
-  }, [status, value]);
-
-  return status === "pending" ? (
-    <h1>Loading</h1>
-  ) : (
+  return (
     <div className="Landing container">
       <div className="row">
         <div className="col-md-6">
@@ -29,20 +15,12 @@ const Landing: React.FC = () => {
             software packages and make it easy for users to update version.
           </p>
           <div className="pt-5 pb-2">
-            <button
-              onClick={() => {
-                authService.current?.login();
-                // authService.current?.login()
-              }}
-            >
-              Login
-            </button>
-            {/* <Link
-              className="btn btn-success btn-lg mr-2"
+            <Link
+              className="btn btn-success btn-lg mr-3"
               to={ApplicationPaths.Login}
             >
               Login
-            </Link> */}
+            </Link>
             <Link
               className="btn btn-success btn-lg"
               to={ApplicationPaths.Register}

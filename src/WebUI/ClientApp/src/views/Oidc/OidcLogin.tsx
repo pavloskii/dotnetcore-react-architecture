@@ -13,16 +13,22 @@ const OidcLogin: React.FC<OidcLoginProps> = ({ action }) => {
     const executeAction = async () => {
       switch (action) {
         case LoginActions.Login:
-          await login();
+          if (login !== undefined) {
+            login();
+          }
           break;
         case LoginActions.LoginCallback:
-          this.processLoginCallback();
+          if (loginCallback !== undefined) {
+            loginCallback();
+          }
           break;
         default:
           throw new Error(`Invalid action '${action}'`);
       }
     };
-  }, []);
+
+    executeAction()
+  }, [action, login, loginCallback]);
 
   return <div>Loading....Login.....</div>;
 };
