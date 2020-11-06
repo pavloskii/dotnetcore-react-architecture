@@ -1,6 +1,7 @@
 ﻿using FDS.Application.Interfaces;
 using FDS.Infrastructure.Identity;
 using FDS.Infrastructure.Persistence;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,13 +19,14 @@ namespace FDS.Infrastructure
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddDefaultIdentity<ApplicationUser>()
-                //.AddRoles<ChannelRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
+                 .AddProfileService<ProfileService>(); 
 
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IProfileService, ProfileService>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();

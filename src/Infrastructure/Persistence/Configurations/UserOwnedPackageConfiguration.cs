@@ -8,9 +8,10 @@ namespace FDS.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<UserOwnedPackage> builder)
         {
-            //builder.HasPartitionKey(o => o.UserId);
-            builder.OwnsOne(o => o.Package);
-            //builder.UseETagConcurrency();
+            builder.ToContainer("UserOwnedPackages")
+                .HasPartitionKey(o => o.UserId)
+                .OwnsOne(o => o.Package);
+            //.UseETagConcurrency();
         }
     }
 }

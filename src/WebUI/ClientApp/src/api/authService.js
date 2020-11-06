@@ -1,5 +1,5 @@
 import { UserManager, WebStorageStateStore } from "oidc-client";
-import { ApplicationPaths, ApplicationName } from "../constants/apiAuthorizationConstants";
+import { ApplicationPaths, ApplicationName, AuthStatus } from "../constants/apiAuthorizationConstants";
 
 export class AuthorizeService {
   _callbacks = [];
@@ -183,15 +183,15 @@ export class AuthorizeService {
   }
 
   error(message) {
-    return { status: AuthenticationResultStatus.Fail, message };
+    return { status: AuthStatus.Fail, message };
   }
 
   success(state) {
-    return { status: AuthenticationResultStatus.Success, state };
+    return { status: AuthStatus.Success, state };
   }
 
   redirect() {
-    return { status: AuthenticationResultStatus.Redirect };
+    return { status: AuthStatus.Redirect };
   }
 
   async ensureUserManagerInitialized() {
@@ -231,8 +231,4 @@ const authService = new AuthorizeService();
 
 export default authService;
 
-export const AuthenticationResultStatus = {
-  Redirect: "redirect",
-  Success: "success",
-  Fail: "fail"
-};
+

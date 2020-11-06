@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 namespace FDS.Domain.ValueObjects
 {
-    public class CountryVo : ValueObject
+    public class ChannelVo : ValueObject
     {
-        public CountryVo() { }
+        public ChannelVo() { }
 
-        public CountryVo(Country country)
+        public ChannelVo(Channel channel)
         {
-            Iso = country.ToString();
+            Name = channel.ToString();
         }
 
-        public string Iso { get; private set; }
+        public string Name { get; private set; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Iso;
+            yield return Name;
         }
     }
 }

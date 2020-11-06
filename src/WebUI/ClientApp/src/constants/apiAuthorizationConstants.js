@@ -1,5 +1,11 @@
 export const ApplicationName = "FDS.WebUI";
 
+export const AuthStatus = {
+  Redirect: "redirect",
+  Success: "success",
+  Fail: "fail"
+};
+
 export const QueryParameterNames = {
   ReturnUrl: "returnUrl",
   Message: "message"

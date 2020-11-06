@@ -8,13 +8,10 @@ namespace FDS.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            //builder
-            //    .ToContainer("Identity")
-            //    .Property<string>("_etag")
-            //    .IsConcurrencyToken();
-            builder.ToContainer("Identity");
-            //builder.Property(d => d.).UseETagConcurrency();
-            //builder.HasNoDiscriminator();
+            builder.ToContainer("Identity")
+                .OwnsMany(p => p.Channels);
+            //.HasNoDiscriminator();
+            //.UseETagConcurrency();
         }
     }
 }

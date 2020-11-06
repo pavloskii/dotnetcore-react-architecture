@@ -8,11 +8,12 @@ namespace FDS.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<PackageVersion> builder)
         {
-            //builder.HasPartitionKey(o => o.PreviousPackageVersionId);
-            builder.OwnsMany(p => p.BannedCountries);
-            //builder.OwnsOne(p => p.Package);
-            //builder.OwnsOne(p => p.PreviousPackageVersion);
-            //builder.UseETagConcurrency();
+            builder.ToContainer("PackageVersions")
+                .HasPartitionKey(o => o.PreviousPackageVersionId)
+                .OwnsMany(p => p.BannedCountries);
+            //.OwnsOne(p => p.Package)
+            //.OwnsOne(p => p.PreviousPackageVersion)
+            //.UseETagConcurrency();
         }
     }
 }

@@ -8,7 +8,5 @@ namespace FDS.Application.Interfaces
         Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password);
 
         Task<Result> DeleteUserAsync(string userId);
-
-        Task<Result> CreateRoleAsync(string roleName);
     }
 }

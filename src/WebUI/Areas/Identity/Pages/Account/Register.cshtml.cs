@@ -15,6 +15,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using FDS.Domain.Enums;
+using FDS.Domain.ValueObjects;
+using System.Net.Http;
+using System.Text.Json;
+using System.Net;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace FDS.WebUI.Areas.Identity.Pages.Account
 {
@@ -25,17 +32,23 @@ namespace FDS.WebUI.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IHttpClientFactory _clientFactory;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IHttpClientFactory clientFactory,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _clientFactory = clientFactory;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -76,14 +89,18 @@ namespace FDS.WebUI.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Channels = new HashSet<ChannelVo> { new ChannelVo(Channel.Public) },
+                    Country = await GetCountryByIp()
+                };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
-                    //Add the new user to the public channel
-                    //await _userManager.AddToRoleAsync(user, Channel.Public.ToString());
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -114,6 +131,58 @@ namespace FDS.WebUI.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        public class IpInfo
+        {
+            public string Country { get; set; }
+        }
+
+        private async Task<string> GetCountryByIp()
+        {
+            try
+            {
+                var client = _clientFactory.CreateClient();
+                var remoteIp = GetRemoteIp();
+                var token = _configuration["ipInfoToken"];
+                var response = await client.GetAsync($"http://ipinfo.io/{remoteIp}?token={token}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return "none";
+                }
+
+                using var responseStream = await response.Content.ReadAsStreamAsync();
+                IpInfo ipInfo = await JsonSerializer.DeserializeAsync<IpInfo>(responseStream);
+
+                return ipInfo.Country;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetCountryByIP Error: {ex.Message}");
+                return "none";
+            }
+        }
+
+        private string GetRemoteIp()
+        {
+            IPAddress remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
+
+            if (remoteIpAddress == null)
+            {
+                throw new Exception("Could not get requests RemoteIpAddress");
+            }
+
+            if (remoteIpAddress.AddressFamily != System.Net.Sockets.AddressFamily.InterNetworkV6)
+            {
+                return remoteIpAddress.ToString();
+            }
+
+            return Dns.GetHostEntry(remoteIpAddress)
+                .AddressList
+                .First(x => x.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                .ToString();
+            
         }
     }
 }

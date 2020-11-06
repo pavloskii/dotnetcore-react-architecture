@@ -13,18 +13,6 @@ namespace FDS.Infrastructure.Persistence
 {
     public static class ApplicationDbContextSeed
     {
-        public static async Task SeedIdentityRolesAsync(RoleManager<ChannelRole> roleManager)
-        {
-            //EF Core 3.1 with CosmosDB does not support Any or AnyAsync
-            if (roleManager.Roles.ToList().Count() == 0)
-            {
-                await roleManager.CreateAsync(new ChannelRole(Channel.Insiders.ToString()));
-                await roleManager.CreateAsync(new ChannelRole(Channel.InternalAlpha.ToString()));
-                await roleManager.CreateAsync(new ChannelRole(Channel.InternalBeta.ToString()));
-                await roleManager.CreateAsync(new ChannelRole(Channel.Public.ToString()));
-            }
-        }
-
         public static async Task SeedDefaultUsersAsync(UserManager<ApplicationUser> userManager)
         {
             var insiderUser = new ApplicationUser
@@ -32,18 +20,16 @@ namespace FDS.Infrastructure.Persistence
                 UserName = "insider@fds.com",
                 Email = "insider@fds.com",
                 Country = Country.MK.ToString(),
+                Channels = new HashSet<ChannelVo>{
+                    new ChannelVo(Channel.Public),
+                    new ChannelVo(Channel.Insiders),
+                }
             };
 
             //EF Core 3.1 with CosmosDB does not support Any or AnyAsync
             if (await userManager.Users.FirstOrDefaultAsync(u => u.UserName == insiderUser.UserName) == null)
             {
                 var insiderCreatedResult = await userManager.CreateAsync(insiderUser, "Insider!1");
-
-                if (insiderCreatedResult.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(insiderUser, Channel.Insiders.ToString());
-                    await userManager.AddToRoleAsync(insiderUser, Channel.Public.ToString());
-                }
             }
 
             var publicUser = new ApplicationUser
@@ -51,16 +37,12 @@ namespace FDS.Infrastructure.Persistence
                 UserName = "public@fds.com",
                 Email = "public@fds.com",
                 Country = Country.DK.ToString(),
+                Channels = new HashSet<ChannelVo> { new ChannelVo(Channel.Public) }
             };
 
             if (await userManager.Users.FirstOrDefaultAsync(u => u.UserName == publicUser.UserName) == null)
             {
                 var publicCreatedResult = await userManager.CreateAsync(publicUser, "Public!1");
-
-                if (publicCreatedResult.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(publicUser, Channel.Public.ToString());
-                }
             }
         }
 
@@ -86,7 +68,7 @@ namespace FDS.Infrastructure.Persistence
                     BannedCountries = new HashSet<CountryVo>(),
                     PackageId = packageId,
                     PackageUrl = "path/to/cloud/storage",
-                    PreviousPackageVersionId = null,
+                    PreviousPackageVersionId = "none",
                     ReleaseDate = new DateTime(2018, 12, 20),
                     Version = "1.0.0"
                 });
@@ -110,7 +92,7 @@ namespace FDS.Infrastructure.Persistence
                 context.PackageVersions.Add(new PackageVersion
                 {
                     PackageVersionId = packageVersionId3,
-                    BannedCountries = new HashSet<CountryVo>() { new CountryVo(Country.MK.ToString()) },
+                    BannedCountries = new HashSet<CountryVo>() { new CountryVo(Country.MK) },
                     PackageId = packageId,
                     PackageUrl = "path/to/cloud/storage",
                     PreviousPackageVersionId = packageVersionId2,
@@ -136,7 +118,7 @@ namespace FDS.Infrastructure.Persistence
                     BannedCountries = new HashSet<CountryVo>(),
                     PackageId = packageId2,
                     PackageUrl = "path/to/cloud/storage",
-                    PreviousPackageVersionId = null,
+                    PreviousPackageVersionId = "none",
                     ReleaseDate = new DateTime(2018, 12, 20),
                     Version = "1.0.0"
                 });
@@ -172,7 +154,7 @@ namespace FDS.Infrastructure.Persistence
                     BannedCountries = new HashSet<CountryVo>(),
                     PackageId = packageId3,
                     PackageUrl = "path/to/cloud/storage",
-                    PreviousPackageVersionId = null,
+                    PreviousPackageVersionId = "none",
                     ReleaseDate = new DateTime(2015, 12, 20),
                     Version = "1.0.0"
                 });
