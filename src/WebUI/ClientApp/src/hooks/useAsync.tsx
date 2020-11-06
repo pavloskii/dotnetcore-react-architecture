@@ -7,17 +7,17 @@ const useAsync = <T, E = string>(
   const [status, setStatus] = React.useState<
     "idle" | "pending" | "success" | "error"
   >("idle");
-  const [value, setValue] = React.useState<T | null>(null);
+  const [data, setData] = React.useState<T | null>(null);
   const [error, setError] = React.useState<E | null>(null);
 
   const execute = React.useCallback(() => {
     setStatus("pending");
-    setValue(null);
+    setData(null);
     setError(null);
 
     return asyncFunction()
       .then((response: any) => {
-        setValue(response);
+        setData(response);
         setStatus("success");
       })
       .catch((error: any) => {
@@ -32,7 +32,7 @@ const useAsync = <T, E = string>(
     }
   }, [execute, immediate]);
 
-  return { execute, status, value, error };
+  return { execute, status, data, error, setData };
 };
 
 export { useAsync };

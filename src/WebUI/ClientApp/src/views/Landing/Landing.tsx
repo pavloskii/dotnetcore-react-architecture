@@ -3,24 +3,40 @@ import { Link } from "react-router-dom";
 import "./Landing.scss";
 import landingImage from "../../assets/images/landing.svg";
 import { ApplicationPaths } from "../../constants/apiAuthorizationConstants";
-import authService from "../../api/authService";
+import { AuthService } from "../../api/authService";
+import { useAsync } from "../../hooks/useAsync";
 
 const Landing: React.FC = () => {
-  const handleLogin = (): void => {
-    authService.signIn();
-  };
+  const authService = React.useRef<AuthService | null>();
+  const { error, status, value } = useAsync(AuthService.create, true);
 
-  return (
+  React.useEffect(() => {
+    if (status === "success") {
+      console.log(value);
+      authService.current = value;
+    }
+  }, [status, value]);
+
+  return status === "pending" ? (
+    <h1>Loading</h1>
+  ) : (
     <div className="Landing container">
       <div className="row">
         <div className="col-md-6">
-          <h1>Professional Tailwind theme designed for developers. </h1>
+          <h1>Easily upload or download all kind of software packages. </h1>
           <p>
-            With Tailwind you can optimized the customization process to save
-            your team time when building websites.{" "}
+            With FDS by your side you can easily share and redistribute your own
+            software packages and make it easy for users to update version.
           </p>
-          <div className="py-5">
-            <button onClick={handleLogin}>Login</button>
+          <div className="pt-5 pb-2">
+            <button
+              onClick={() => {
+                authService.current?.login();
+                // authService.current?.login()
+              }}
+            >
+              Login
+            </button>
             {/* <Link
               className="btn btn-success btn-lg mr-2"
               to={ApplicationPaths.Login}
@@ -43,11 +59,15 @@ const Landing: React.FC = () => {
 
       <footer className="fixed-bottom text-center mb-3">
         Logo made by{" "}
-        <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">
+        <a
+          href="https://www.flaticon.com/authors/eucalyp"
+          title="Eucalyp"
+          rel="nofollow"
+        >
           Eucalyp
         </a>{" "}
         from{" "}
-        <a href="https://www.flaticon.com/" title="Flaticon">
+        <a href="https://www.flaticon.com/" title="Flaticon" rel="nofollow">
           {" "}
           www.flaticon.com
         </a>
