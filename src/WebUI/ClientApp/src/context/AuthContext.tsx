@@ -1,8 +1,6 @@
 import * as React from "react";
 import { User } from "oidc-client";
-import { AuthService } from "../api/authService";
-import { useAsync } from "../hooks/useAsync";
-
+import { useAuthServiceAsync } from "../hooks/useAuthServiceAsync";
 
 type AuthContextProps = {
   user: User;
@@ -13,21 +11,25 @@ type AuthContextProps = {
 const AuthContext = React.createContext<Partial<AuthContextProps>>({});
 
 const AuthProvider: React.FC = () => {
-  const { error, execute, status, data, setData } = useAsync(
-    bootstrapAppData,
-    false
-  );
+  const {
+    authService,
+    error,
+    setUser,
+    status,
+    user
+  } = useAuthServiceAsync(true);
 
-  React.useEffect(() => {
-    execute();
-  }, [execute]);
-
-  const login = React.useCallback(() => data.authService.login(), [data.authService]);
+  const login = React.useCallback(() => authService.current?.login(), [
+    authService
+  ]);
 
   const loginCallback = React.useCallback(async () => {
-    const user = await data.authService.loginCallback();
-    setData({ ...data, user });
-  }, [data, setData]);
+    let user: User | null = null;
+    if (authService !== undefined) {
+      user = await authService.current.loginCallback();
+    }
+    setUser(user);
+  }, [setUser, authService]);
 
   const value = React.useMemo(() => ({ user, login, loginCallback }), [
     user,
@@ -58,4 +60,4 @@ const useAuth = () => {
   return context;
 };
 
-export {AuthProvider, useAuth}
+export { AuthProvider, useAuth };
