@@ -1,11 +1,11 @@
 import * as React from "react";
 
-const useAsync = <T, E = string>(asyncFunction: () => Promise<T>, immediate = true) => {
+const useAsync = <T,>(asyncFunction: () => Promise<T>, immediate = true) => {
   const [status, setStatus] = React.useState<
     "idle" | "pending" | "success" | "error"
   >("idle");
   const [data, setData] = React.useState<T | null>(null);
-  const [error, setError] = React.useState<E | null>(null);
+  const [error, setError] = React.useState<any | null>(null);
 
   const execute = React.useCallback(() => {
     setStatus("pending");
@@ -18,7 +18,7 @@ const useAsync = <T, E = string>(asyncFunction: () => Promise<T>, immediate = tr
         setStatus("success");
       })
       .catch((error: any) => {
-        console.log(error)
+        console.log(error);
         setError(error);
         setStatus("error");
       });

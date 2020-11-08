@@ -1,13 +1,17 @@
 import * as React from "react";
 import { useAuth } from "../../context/AuthContext";
-import { LoginActions } from "../../constants/apiAuthorizationConstants";
+import {
+  LoginActions,
+  LogoutActions
+} from "../../constants/apiAuthorizationConstants";
+import FullPageSpinner from "../../components/FullPageSpinner/FullPageSpinner";
 
 type OidcLoginProps = {
   action: string;
 };
 
 const OidcLogin: React.FC<OidcLoginProps> = ({ action }) => {
-  const { login, loginCallback } = useAuth();
+  const { login, loginCallback, logoutCallback } = useAuth();
 
   React.useEffect(() => {
     const executeAction = async () => {
@@ -22,15 +26,20 @@ const OidcLogin: React.FC<OidcLoginProps> = ({ action }) => {
             loginCallback();
           }
           break;
+        case LogoutActions.LogoutCallback:
+          if (logoutCallback !== undefined) {
+            logoutCallback();
+          }
+          break;
         default:
           throw new Error(`Invalid action '${action}'`);
       }
     };
 
-    executeAction()
-  }, [action, login, loginCallback]);
+    executeAction();
+  }, [action, login, loginCallback, logoutCallback]);
 
-  return <div>Loading....Login.....</div>;
+  return <FullPageSpinner />;
 };
 
 export default OidcLogin;

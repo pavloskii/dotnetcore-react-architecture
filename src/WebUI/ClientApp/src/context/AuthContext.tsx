@@ -1,17 +1,23 @@
 import * as React from "react";
-import { User } from "oidc-client";
+import { useHistory } from "react-router-dom";
+import { User, SignoutResponse } from "oidc-client";
 import { useAsync } from "../hooks/useAsync";
-import { authService } from "../api/authService";
+import { authService } from "../services/authService";
+import FullPageSpinner from "../components/FullPageSpinner/FullPageSpinner";
+import ErrorFallback from "../components/ErrorFallback";
 
 type AuthContextProps = {
   user: User | null;
   login: () => Promise<void>;
   loginCallback: () => Promise<void>;
+  logout: () => Promise<void>;
+  logoutCallback: () => Promise<void>;
 };
 
 const AuthContext = React.createContext<Partial<AuthContextProps>>({});
 
 const AuthProvider: React.FC = ({ children }) => {
+  const history = useHistory();
   const { error, status, data: user, setData } = useAsync(
     authService.getUser,
     true
@@ -20,22 +26,38 @@ const AuthProvider: React.FC = ({ children }) => {
   const login = React.useCallback(() => authService.login(), []);
 
   const loginCallback = React.useCallback(
-    () => authService.loginCallback().then((user) => setData(user)),
-    [setData]
+    () =>
+      authService.loginCallback().then((user) => {
+        setData(user);
+        history.push("/");
+      }),
+    [setData, history]
   );
 
-  const value = React.useMemo(() => ({ user, login, loginCallback }), [
-    user,
-    login,
-    loginCallback
-  ]);
+  const logout = React.useCallback(() => authService.logout(), []);
+
+  const logoutCallback = React.useCallback(
+    () =>
+      authService
+        .logoutCallback()
+        .then(() => {
+          history.push("/");
+        })
+        .catch((error) => console.log(error)),
+    [history]
+  );
+
+  const value = React.useMemo(
+    () => ({ user, login, loginCallback, logout, logoutCallback }),
+    [user, login, loginCallback, logout, logoutCallback]
+  );
 
   if (status === "idle" || status === "pending") {
-    return <h1>Loading</h1>;
+    return <FullPageSpinner />;
   }
 
   if (error !== null) {
-    return <h1>{JSON.stringify(error)}</h1>;
+    return <ErrorFallback error={error} resetErrorBoundary={() => {}} />;
   }
 
   if (status === "success") {
