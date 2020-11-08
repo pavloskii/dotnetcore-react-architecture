@@ -20,22 +20,24 @@ namespace FDS.Infrastructure.Identity
 
         public Task<PersistedGrant> GetAsync(string key)
         {
-            key = EncodePersistedGrantKey(key);
+            throw new NotImplementedException();
+            //key = EncodePersistedGrantKey(key);
 
-            var result = await _context.per
-                _container.ReadItemAsync<PersistedGrantItem>(key, new PartitionKey(key));
-            if (result.StatusCode == HttpStatusCode.NotFound)
-            {
-                return null;
-            }
+            //var result = await _context.per
+            //    _container.ReadItemAsync<PersistedGrantItem>(key, new PartitionKey(key));
+            //if (result.StatusCode == HttpStatusCode.NotFound)
+            //{
+            //    return null;
+            //}
 
-            var persistedGrantItem = (PersistedGrantItem)result;
-            var persistedGrant = persistedGrantItem.ToModel();
-            return persistedGrant;
+            //var persistedGrantItem = (PersistedGrantItem)result;
+            //var persistedGrant = persistedGrantItem.ToModel();
+            //return persistedGrant;
         }
 
         public Task StoreAsync(PersistedGrant grant)
         {
+            throw new NotImplementedException();
             //    grant.Key = EncodePersistedGrantKey(grant.Key);
             //    var persistedGrantItem = grant.ToItem();
             //    return _container.CreateItemAsync(persistedGrantItem);
@@ -43,6 +45,7 @@ namespace FDS.Infrastructure.Identity
 
         public Task RemoveAsync(string key)
         {
+            throw new NotImplementedException();
             //    key = EncodePersistedGrantKey(key);
             //    return _container.DeleteItemAsync<PersistedGrantItem>(key, new PartitionKey(key));
         }

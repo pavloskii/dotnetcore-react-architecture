@@ -14,5 +14,8 @@ namespace FDS.Application.Interfaces
         DbSet<UserOwnedPackage> UserOwnedPackages { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+        //new DbSet<PersistedGrant> PersistedGrants { get; set; }
+
     }
 }

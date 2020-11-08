@@ -31,8 +31,6 @@ namespace FDS.Infrastructure.Identity
             claims.Add(new Claim(ClaimTypes.Country, user.Country));
 
             context.IssuedClaims = claims;
-            //context.IssuedClaims.Add(new Claim(ClaimTypes.Country, user.Country));
-            //context.IssuedClaims.AddRange(user.Channels.Select(c => new Claim(ClaimTypes.Role, c.Name)).ToList());
         }
 
         public async Task IsActiveAsync(IsActiveContext context)

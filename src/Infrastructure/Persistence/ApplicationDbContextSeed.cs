@@ -70,6 +70,7 @@ namespace FDS.Infrastructure.Persistence
                     PackageUrl = "path/to/cloud/storage",
                     PreviousPackageVersionId = "none",
                     ReleaseDate = new DateTime(2018, 12, 20),
+                    Channel = Channel.Public.ToString(),
                     Version = "1.0.0"
                 });
 
@@ -97,6 +98,7 @@ namespace FDS.Infrastructure.Persistence
                     PackageUrl = "path/to/cloud/storage",
                     PreviousPackageVersionId = packageVersionId2,
                     ReleaseDate = new DateTime(2020, 10, 10),
+                    Channel = Channel.Public.ToString(),
                     Version = "2.0.1"
                 });
 
@@ -120,6 +122,7 @@ namespace FDS.Infrastructure.Persistence
                     PackageUrl = "path/to/cloud/storage",
                     PreviousPackageVersionId = "none",
                     ReleaseDate = new DateTime(2018, 12, 20),
+                    Channel = Channel.Public.ToString(),
                     Version = "1.0.0"
                 });
 
@@ -156,6 +159,7 @@ namespace FDS.Infrastructure.Persistence
                     PackageUrl = "path/to/cloud/storage",
                     PreviousPackageVersionId = "none",
                     ReleaseDate = new DateTime(2015, 12, 20),
+                    Channel = Channel.Public.ToString(),
                     Version = "1.0.0"
                 });
                 await context.SaveChangesAsync();

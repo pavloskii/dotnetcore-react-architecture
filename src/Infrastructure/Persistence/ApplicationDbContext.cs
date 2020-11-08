@@ -2,6 +2,7 @@
 using FDS.Domain.Common;
 using FDS.Domain.Entities;
 using FDS.Infrastructure.Identity;
+using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace FDS.Infrastructure.Persistence
         public DbSet<PackageVersion> PackageVersions { get; set; }
 
         public DbSet<UserOwnedPackage> UserOwnedPackages { get; set; }
+
+        //public new DbSet<PersistedGrant> PersistedGrants { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
