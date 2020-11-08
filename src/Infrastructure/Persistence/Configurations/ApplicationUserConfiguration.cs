@@ -8,7 +8,7 @@ namespace FDS.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder.ToContainer("Identity")
+            builder.ToContainer("Users")
                 .OwnsMany(p => p.Channels);
             //.HasNoDiscriminator();
             //.UseETagConcurrency();
