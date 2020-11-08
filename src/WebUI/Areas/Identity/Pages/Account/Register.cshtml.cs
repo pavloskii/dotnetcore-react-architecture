@@ -94,7 +94,7 @@ namespace FDS.WebUI.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     Email = Input.Email,
                     Channels = new HashSet<ChannelVo> { new ChannelVo(Channel.Public) },
-                    Country = await GetCountryByIp()
+                    Country = await GetCountryByIp() ?? "MK" //Locally it always returns the local network IP, so just for development we hard code it MK
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);

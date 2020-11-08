@@ -50,13 +50,11 @@ class AuthService implements IAuthService {
   };
 
   public logoutCallback = async (): Promise<SignoutResponse | void> => {
-    console.log("Hello")
     const userManager = await this.provideUserManager();
-    console.log("Hello 2")
 
     return userManager
       .signoutCallback()
-      .then((response) => userManager.removeUser());
+      .then(() => userManager.removeUser());
   };
 
   private provideUserManager = async (): Promise<UserManager> => {

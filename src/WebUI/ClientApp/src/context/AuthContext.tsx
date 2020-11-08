@@ -11,7 +11,7 @@ type AuthContextProps = {
   login: () => Promise<void>;
   loginCallback: () => Promise<void>;
   logout: () => Promise<void>;
-  logoutCallback: () => Promise<void>;
+  logoutCallback: () => Promise<void | SignoutResponse>;
 };
 
 const AuthContext = React.createContext<Partial<AuthContextProps>>({});
@@ -27,23 +27,20 @@ const AuthProvider: React.FC = ({ children }) => {
 
   const loginCallback = React.useCallback(
     () =>
-      authService.loginCallback().then((user) => {
-        setData(user);
-        history.push("/");
-      }),
+      authService
+        .loginCallback()
+        .then((user) => {
+          setData(user);
+          history.push("/");
+        })
+        .finally(() => history.push("/")),
     [setData, history]
   );
 
   const logout = React.useCallback(() => authService.logout(), []);
 
   const logoutCallback = React.useCallback(
-    () =>
-      authService
-        .logoutCallback()
-        .then(() => {
-          history.push("/");
-        })
-        .catch((error) => console.log(error)),
+    () => authService.logoutCallback().finally(() => history.push("/")),
     [history]
   );
 

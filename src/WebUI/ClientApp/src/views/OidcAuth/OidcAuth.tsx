@@ -2,7 +2,9 @@ import * as React from "react";
 import { useAuth } from "../../context/AuthContext";
 import {
   LoginActions,
-  LogoutActions
+  LogoutActions,
+  ApplicationPaths,
+  QueryParameterNames
 } from "../../constants/apiAuthorizationConstants";
 import FullPageSpinner from "../../components/FullPageSpinner/FullPageSpinner";
 
@@ -30,6 +32,15 @@ const OidcLogin: React.FC<OidcLoginProps> = ({ action }) => {
           if (logoutCallback !== undefined) {
             logoutCallback();
           }
+          break;
+        case LoginActions.Register:
+          window.location.replace(
+            `${window.location.origin}${
+              ApplicationPaths.IdentityRegisterPath
+            }?${QueryParameterNames.ReturnUrl}=${encodeURI(
+              ApplicationPaths.Login
+            )}`
+          );
           break;
         default:
           throw new Error(`Invalid action '${action}'`);
