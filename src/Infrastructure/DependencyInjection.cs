@@ -23,7 +23,7 @@ namespace FDS.Infrastructure
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
-                 .AddProfileService<ProfileService>(); 
+                .AddProfileService<ProfileService>();
 
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IProfileService, ProfileService>();

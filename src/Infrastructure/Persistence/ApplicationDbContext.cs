@@ -29,6 +29,8 @@ namespace FDS.Infrastructure.Persistence
 
         public DbSet<PackageVersion> PackageVersions { get; set; }
 
+        public DbSet<UserOwnedPackage> UserOwnedPackages { get; set; }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())

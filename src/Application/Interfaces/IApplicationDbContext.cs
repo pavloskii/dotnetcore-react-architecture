@@ -11,6 +11,8 @@ namespace FDS.Application.Interfaces
 
         DbSet<PackageVersion> PackageVersions { get; set; }
 
+        DbSet<UserOwnedPackage> UserOwnedPackages { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
