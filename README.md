@@ -4,6 +4,25 @@
 
 <br/>
 
+## Technologies
+
+* ASP.NET Core 3.1
+* Azure Cosmos DB
+* Entity Framework Core 3.1
+* Identity Server 4
+* MediatR
+* FluentValidation
+* AutoMapper
+* NUnit
+* NSwag
+* React
+* Typescript
+* React Query
+* Bootstrap
+* React Testing Library
+* Cypress
+
+
 ## Installation
 
 To run demo locally, you will need to install and run Azure CosmosDB Emulator first: [download](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=cli%2Cssl-netstd21)
@@ -21,3 +40,10 @@ Mobile:
 
 Desktop:
 <img  src="./docs/screenshots/home-screen.png"  alt="application screenshot desktop"  width="250" >
+
+
+## Resources and Credits
+
+Robert C. Martin (Uncle Bob) - https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
+Jason Taylor - https://jasontaylor.dev/clean-architecture-getting-started/
+Kevin C. Dodds - https://kentcdodds.com/blog/authentication-in-react-applications/
