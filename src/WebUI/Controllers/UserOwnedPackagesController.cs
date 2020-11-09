@@ -20,7 +20,7 @@ namespace FDS.WebUI.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<CheckForUpdateVm>> CheckForUpdate([FromQuery] string version, [FromQuery] string packageId)
         {
-            return await Mediator.Send(new CheckForUpdateQuery() { FromVersion = version, PackageId = packageId});
+            return await Mediator.Send(new CheckForUpdateQuery() { FromPackageVersionId = version, PackageId = packageId});
         }
     }
 }
