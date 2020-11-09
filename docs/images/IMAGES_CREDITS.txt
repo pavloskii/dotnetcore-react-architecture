@@ -1,3 +1,7 @@
 hearing-icon.png - Image by Clker-Free-Vector-Images from Pixabay
 anti-virus.jpg - Image by Pete Linforth from Pixabay 
 printer-drivers.png - Image by OpenClipart-Vectors from Pixabay 
+
+dotnetcore.png = wikipedia commons
+react.png - wikipedia
+typescript.png - wikipedia

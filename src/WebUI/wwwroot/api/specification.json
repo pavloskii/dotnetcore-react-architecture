@@ -67,6 +67,76 @@
           }
         ]
       }
+    },
+    "/api/UserOwnedPackages": {
+      "get": {
+        "tags": [
+          "UserOwnedPackages"
+        ],
+        "operationId": "UserOwnedPackages_Get",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserOwnedPackagesVm"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/UserOwnedPackages/CheckForUpdate": {
+      "get": {
+        "tags": [
+          "UserOwnedPackages"
+        ],
+        "operationId": "UserOwnedPackages_CheckForUpdate",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "packageId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckForUpdateVm"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -115,6 +185,50 @@
         "additionalProperties": false,
         "properties": {
           "packageId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UserOwnedPackagesVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userOwnedPackages": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/UserOwnedPackageDto"
+            }
+          }
+        }
+      },
+      "UserOwnedPackageDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "packageId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CheckForUpdateVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "hasAvailable": {
+            "type": "boolean"
+          },
+          "version": {
             "type": "string",
             "nullable": true
           }

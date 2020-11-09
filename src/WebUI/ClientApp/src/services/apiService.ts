@@ -109,6 +109,106 @@ export class PackagesApi implements IPackagesApi {
     }
 }
 
+export interface IUserOwnedPackagesApi {
+    get(): Promise<UserOwnedPackagesVm>;
+    checkForUpdate(version: string | null | undefined, packageId: string | null | undefined): Promise<CheckForUpdateVm>;
+}
+
+export class UserOwnedPackagesApi implements IUserOwnedPackagesApi {
+    private instance: AxiosInstance;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+        this.instance = instance ? instance : axios.create();
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    get(): Promise<UserOwnedPackagesVm> {
+        let url_ = this.baseUrl + "/api/UserOwnedPackages";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <AxiosRequestConfig>{
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.instance.request(options_).then((_response: AxiosResponse) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: AxiosResponse): Promise<UserOwnedPackagesVm> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = UserOwnedPackagesVm.fromJS(resultData200);
+            return result200;
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<UserOwnedPackagesVm>(<any>null);
+    }
+
+    checkForUpdate(version: string | null | undefined, packageId: string | null | undefined): Promise<CheckForUpdateVm> {
+        let url_ = this.baseUrl + "/api/UserOwnedPackages/CheckForUpdate?";
+        if (version !== undefined)
+            url_ += "version=" + encodeURIComponent("" + version) + "&"; 
+        if (packageId !== undefined)
+            url_ += "packageId=" + encodeURIComponent("" + packageId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <AxiosRequestConfig>{
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.instance.request(options_).then((_response: AxiosResponse) => {
+            return this.processCheckForUpdate(_response);
+        });
+    }
+
+    protected processCheckForUpdate(response: AxiosResponse): Promise<CheckForUpdateVm> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = CheckForUpdateVm.fromJS(resultData200);
+            return result200;
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CheckForUpdateVm>(<any>null);
+    }
+}
+
 export class PackagesVm implements IPackagesVm {
     packages?: PackageDto[] | undefined;
 
@@ -239,6 +339,134 @@ export class InstallPackageCommand implements IInstallPackageCommand {
 
 export interface IInstallPackageCommand {
     packageId?: string | undefined;
+}
+
+export class UserOwnedPackagesVm implements IUserOwnedPackagesVm {
+    userOwnedPackages?: UserOwnedPackageDto[] | undefined;
+
+    constructor(data?: IUserOwnedPackagesVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["userOwnedPackages"])) {
+                this.userOwnedPackages = [] as any;
+                for (let item of _data["userOwnedPackages"])
+                    this.userOwnedPackages!.push(UserOwnedPackageDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UserOwnedPackagesVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserOwnedPackagesVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.userOwnedPackages)) {
+            data["userOwnedPackages"] = [];
+            for (let item of this.userOwnedPackages)
+                data["userOwnedPackages"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IUserOwnedPackagesVm {
+    userOwnedPackages?: UserOwnedPackageDto[] | undefined;
+}
+
+export class UserOwnedPackageDto implements IUserOwnedPackageDto {
+    packageId?: string | undefined;
+    name?: string | undefined;
+    version?: string | undefined;
+
+    constructor(data?: IUserOwnedPackageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.packageId = _data["packageId"];
+            this.name = _data["name"];
+            this.version = _data["version"];
+        }
+    }
+
+    static fromJS(data: any): UserOwnedPackageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserOwnedPackageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["packageId"] = this.packageId;
+        data["name"] = this.name;
+        data["version"] = this.version;
+        return data; 
+    }
+}
+
+export interface IUserOwnedPackageDto {
+    packageId?: string | undefined;
+    name?: string | undefined;
+    version?: string | undefined;
+}
+
+export class CheckForUpdateVm implements ICheckForUpdateVm {
+    hasAvailable?: boolean;
+    version?: string | undefined;
+
+    constructor(data?: ICheckForUpdateVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.hasAvailable = _data["hasAvailable"];
+            this.version = _data["version"];
+        }
+    }
+
+    static fromJS(data: any): CheckForUpdateVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new CheckForUpdateVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["hasAvailable"] = this.hasAvailable;
+        data["version"] = this.version;
+        return data; 
+    }
+}
+
+export interface ICheckForUpdateVm {
+    hasAvailable?: boolean;
+    version?: string | undefined;
 }
 
 export class SwaggerException extends Error {
