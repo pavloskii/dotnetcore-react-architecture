@@ -3,7 +3,8 @@ import { useAuth } from "../../context/AuthContext";
 import { LogOut, User } from "react-feather";
 import DarkModeToggler from "../DarkModeToggler/DarkModeToggler";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { ScreenSizes } from "../../constants/ScreenSizes";
+import { ScreenSizes } from "../../constants/screenSizes";
+import { ApplicationPaths } from "../../constants/apiAuthorizationConstants";
 import "./Navbar.scss";
 
 type NavbarProps = {
@@ -13,6 +14,12 @@ type NavbarProps = {
 const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
   const { user, logout } = useAuth();
   const { width } = useWindowSize();
+
+  const openProfilePage = () => {
+    window.location.replace(
+      `${window.location.origin}${ApplicationPaths.IdentityManagePath}`
+    );
+  };
 
   return (
     <nav className="navbar navbar-light bg-white border-bottom shadow-sm">
@@ -25,7 +32,10 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
       <div className="border-left nav-link cursor-pointer">
         <DarkModeToggler />
       </div>
-      <div className="border-left nav-link cursor-pointer">
+      <div
+        className="border-left nav-link cursor-pointer"
+        onClick={openProfilePage}
+      >
         {width > ScreenSizes.small ? (
           user?.profile?.preferred_username
         ) : (

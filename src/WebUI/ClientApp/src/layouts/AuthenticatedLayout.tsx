@@ -26,7 +26,7 @@ const AuthenticatedLayout: React.FC = () => {
       <div className="page-content-wrapper">
         <Navbar toggleSidebar={handleSidebarToggle} />
 
-        <div className="container">
+        <div className="p-3">
           <Switch>
             <Route exact path="/">
               <AllPackages />
