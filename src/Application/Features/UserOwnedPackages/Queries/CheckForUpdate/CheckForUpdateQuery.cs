@@ -11,7 +11,7 @@ namespace FDS.Application.Features.UserOwnedPackages.Queries.CheckForUpdate
     public class CheckForUpdateQuery : IRequest<CheckForUpdateVm>
     {
         public string PackageId { get; set; }
-        public string FromVersion { get; set; }
+        public string FromPackageVersionId { get; set; }
     }
 
     public class CheckForUpdateQueryHandler : IRequestHandler<CheckForUpdateQuery, CheckForUpdateVm>
@@ -31,7 +31,7 @@ namespace FDS.Application.Features.UserOwnedPackages.Queries.CheckForUpdate
 
             //Ensures updating in stages
             var packageVersion = await _context.PackageVersions
-                .FirstOrDefaultAsync(pv => pv.PreviousPackageVersionId == request.FromVersion);
+                .FirstOrDefaultAsync(pv => pv.PreviousPackageVersionId == request.FromPackageVersionId);
 
             //If the version is the newest
             if (packageVersion == null) return vm;
