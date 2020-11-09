@@ -13,3 +13,11 @@ git clone https://github.com/pavloskii/dotnetcore-react-architecture.git
 cd dotnetcore-react-architecture
 dotnet run
 ```
+
+## Screenshots
+
+Mobile:
+<img  src="./docs/screenshots/home-screen-mobile.png"  alt="application screenshot mobile"  width="250" >
+
+Desktop:
+<img  src="./docs/screenshots/home-screen.png"  alt="application screenshot desktop"  width="250" >
