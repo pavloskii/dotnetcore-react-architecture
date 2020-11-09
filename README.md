@@ -44,6 +44,11 @@ Desktop:
 
 ## Resources and Credits
 
-Robert C. Martin (Uncle Bob) - https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
-Jason Taylor - https://jasontaylor.dev/clean-architecture-getting-started/
-Kevin C. Dodds - https://kentcdodds.com/blog/authentication-in-react-applications/
+* Robert C. Martin (Uncle Bob) - https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
+* Jason Taylor - https://jasontaylor.dev/clean-architecture-getting-started/
+* Kevin C. Dodds - https://kentcdodds.com/blog/authentication-in-react-applications/
+* Countries - https://gist.github.com/jplwood/4f77b55cfedf2820dce0dfcd3ee0c3ea
+* Katerina Limpitsouni (unDraw ilustrations) - https://undraw.co/illustrations
+* Country Finder by IP- https://ipinfo.io/
+* Logo by Eucalyp - https://www.flaticon.com/authors/eucalyp / https://www.flaticon.com/
+* Images from Pixabay - https://pixabay.com/
