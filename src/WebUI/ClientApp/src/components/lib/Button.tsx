@@ -1,27 +1,29 @@
 import * as React from "react";
 
-type ButtonProps = {
-  children?: React.ReactNode;
-  onClick?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | undefined;
+// type ButtonProps = {
+//   children?: React.ReactNode;
+//   onClick?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | undefined;
+//   type?: "button" | "reset" | "submit";
+//   color?: "primary" | "secondary" | "success" | "danger";
+//   [prop: string]: any;
+// };
+
+interface IButtonProps
+  extends React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  > {
   type?: "button" | "reset" | "submit";
   color?: "primary" | "secondary" | "success" | "danger";
-  [prop: string]: any;
-};
+}
 
-const Button: React.FC<ButtonProps> = ({
-  onClick,
+const Button: React.FC<IButtonProps> = ({
   children,
   type = "button",
-  color = "success",
-  ...props
+  color = "success"
 }) => {
   return (
-    <button
-      type={type}
-      className={`btn btn-${color}`}
-      {...props}
-      onClick={onClick}
-    >
+    <button type={type} className={`btn btn-outlined btn-${color}`}>
       {children}
     </button>
   );

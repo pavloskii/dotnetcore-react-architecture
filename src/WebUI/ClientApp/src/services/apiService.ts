@@ -11,6 +11,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export interface IPackagesApi {
     get(): Promise<PackagesVm>;
+    install(command: InstallPackageCommand): Promise<string>;
 }
 
 export class PackagesApi implements IPackagesApi {
@@ -61,6 +62,50 @@ export class PackagesApi implements IPackagesApi {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<PackagesVm>(<any>null);
+    }
+
+    install(command: InstallPackageCommand): Promise<string> {
+        let url_ = this.baseUrl + "/api/Packages/Install";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <AxiosRequestConfig>{
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            }
+        };
+
+        return this.instance.request(options_).then((_response: AxiosResponse) => {
+            return this.processInstall(_response);
+        });
+    }
+
+    protected processInstall(response: AxiosResponse): Promise<string> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<string>(<any>null);
     }
 }
 
@@ -158,6 +203,42 @@ export interface IPackageDto {
     name?: string | undefined;
     imageUrl?: string | undefined;
     description?: string | undefined;
+}
+
+export class InstallPackageCommand implements IInstallPackageCommand {
+    packageId?: string | undefined;
+
+    constructor(data?: IInstallPackageCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.packageId = _data["packageId"];
+        }
+    }
+
+    static fromJS(data: any): InstallPackageCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new InstallPackageCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["packageId"] = this.packageId;
+        return data; 
+    }
+}
+
+export interface IInstallPackageCommand {
+    packageId?: string | undefined;
 }
 
 export class SwaggerException extends Error {

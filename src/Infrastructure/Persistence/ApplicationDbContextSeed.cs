@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FDS.Infrastructure.Persistence
@@ -51,18 +50,18 @@ namespace FDS.Infrastructure.Persistence
             if (await context.Packages.FirstOrDefaultAsync() == null)
             {
                 var packageId = Guid.NewGuid().ToString();
-                context.Packages.Add(new Package
+                await context.Packages.AddAsync(new Package
                 {
                     PackageId = packageId,
                     LatestVersion = "2.0.1",
-                    Description = "Hearing Aids Software",
-                    ImageUrl = "https://github.com/pavloskii/dotnetcore-react-architecture/blob/master/docs/images/hearing-icon.png",
+                    Description = "Hearing Aids Software from HASoft, USA",
+                    ImageUrl = "/img/hearing-icon.png",
                     Name = "HASoft"
                 });
 
                 var packageVersionId1 = Guid.NewGuid().ToString();
 
-                context.PackageVersions.Add(new PackageVersion
+                await context.PackageVersions.AddAsync(new PackageVersion
                 {
                     PackageVersionId = packageVersionId1,
                     BannedCountries = new HashSet<CountryVo>(),
@@ -76,7 +75,7 @@ namespace FDS.Infrastructure.Persistence
 
                 var packageVersionId2 = Guid.NewGuid().ToString();
 
-                context.PackageVersions.Add(new PackageVersion
+                await context.PackageVersions.AddAsync(new PackageVersion
                 {
                     PackageVersionId = packageVersionId2,
                     BannedCountries = new HashSet<CountryVo>(),
@@ -90,7 +89,7 @@ namespace FDS.Infrastructure.Persistence
 
                 var packageVersionId3 = Guid.NewGuid().ToString();
 
-                context.PackageVersions.Add(new PackageVersion
+                await context.PackageVersions.AddAsync(new PackageVersion
                 {
                     PackageVersionId = packageVersionId3,
                     BannedCountries = new HashSet<CountryVo>() { new CountryVo(Country.MK) },
@@ -103,18 +102,18 @@ namespace FDS.Infrastructure.Persistence
                 });
 
                 var packageId2 = Guid.NewGuid().ToString();
-                context.Packages.Add(new Package
+                await context.Packages.AddAsync(new Package
                 {
                     PackageId = packageId2,
                     LatestVersion = "2.0.0",
-                    Description = "Anti-virus Software",
-                    ImageUrl = "https://github.com/pavloskii/dotnetcore-react-architecture/blob/master/docs/images/anti-virus.jpg",
+                    Description = "Anti-virus Software that will keep your computer safe. Trust is a must!",
+                    ImageUrl = "/img/anti-virus.jpg",
                     Name = "AntiV"
                 });
 
                 var package2VersionId1 = Guid.NewGuid().ToString();
 
-                context.PackageVersions.Add(new PackageVersion
+                await context.PackageVersions.AddAsync(new PackageVersion
                 {
                     PackageVersionId = package2VersionId1,
                     BannedCountries = new HashSet<CountryVo>(),
@@ -128,7 +127,7 @@ namespace FDS.Infrastructure.Persistence
 
                 var package2VersionId2 = Guid.NewGuid().ToString();
 
-                context.PackageVersions.Add(new PackageVersion
+                await context.PackageVersions.AddAsync(new PackageVersion
                 {
                     PackageVersionId = package2VersionId2,
                     BannedCountries = new HashSet<CountryVo>(),
@@ -142,16 +141,16 @@ namespace FDS.Infrastructure.Persistence
 
 
                 var packageId3 = Guid.NewGuid().ToString();
-                context.Packages.Add(new Package
+                await context.Packages.AddAsync(new Package
                 {
                     PackageId = packageId3,
                     LatestVersion = "1.0.0",
-                    Description = "Printer drivers",
-                    ImageUrl = "https://github.com/pavloskii/dotnetcore-react-architecture/blob/master/docs/images/printer-drivers.png",
+                    Description = "Drivers for MF203 Somy printer",
+                    ImageUrl = "/img/printer-drivers.png",
                     Name = "PrintDriver"
                 });
 
-                context.PackageVersions.Add(new PackageVersion
+                await context.PackageVersions.AddAsync(new PackageVersion
                 {
                     PackageVersionId = Guid.NewGuid().ToString(),
                     BannedCountries = new HashSet<CountryVo>(),

@@ -30,6 +30,43 @@
           }
         ]
       }
+    },
+    "/api/Packages/Install": {
+      "post": {
+        "tags": [
+          "Packages"
+        ],
+        "operationId": "Packages_Install",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstallPackageCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -68,6 +105,16 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "InstallPackageCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "packageId": {
             "type": "string",
             "nullable": true
           }

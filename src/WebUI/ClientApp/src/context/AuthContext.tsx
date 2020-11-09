@@ -5,6 +5,7 @@ import { useAsync } from "../hooks/useAsync";
 import { authService } from "../services/authService";
 import FullPageSpinner from "../components/FullPageSpinner/FullPageSpinner";
 import ErrorFallback from "../components/ErrorFallback";
+import { setInterceptors, setToken } from "../utils/axiosConfig";
 
 type AuthContextProps = {
   user: User | null;
@@ -43,6 +44,13 @@ const AuthProvider: React.FC = ({ children }) => {
     () => authService.logoutCallback().finally(() => history.push("/")),
     [history]
   );
+
+  React.useEffect(() => {
+    if (user !== null) {
+      setInterceptors(logout);
+      setToken(user.access_token);
+    }
+  }, [user, logout]);
 
   const value = React.useMemo(
     () => ({ user, login, loginCallback, logout, logoutCallback }),

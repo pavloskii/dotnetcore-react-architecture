@@ -1,34 +1,34 @@
 import * as React from "react";
+import { IPackageDto, PackagesApi, InstallPackageCommand } from "../../services/apiService";
 
-type PackageCardProps = {
+const PackageCard: React.FC<IPackageDto> = ({
+  imageUrl,
+  latestVersion,
+  description,
+  name,
+  packageId
+}) => {
+  const installPackage = () => {
+    const packagesApi = new PackagesApi();
+    const command = new InstallPackageCommand();
+    command.packageId = packageId;
+    packagesApi.install(command);
+  };
 
-}
-
-const PackageCard: React.FC = () => {
   return (
     <div className="card p-3">
       <div className="d-flex flex-row mb-3">
-        <img src="https://i.imgur.com/42SqVZd.png" width="70" />
+        <img src={imageUrl} width="70" alt={description} />
         <div className="d-flex flex-column ml-2">
-          <span>Dropbox</span>
-          <span className="text-black-50">File Management</span>
-          <span className="ratings">
-            <i className="fa fa-star"></i>
-            <i className="fa fa-star"></i>
-            <i className="fa fa-star"></i>
-            <i className="fa fa-star"></i>
-          </span>
+          <span>{name}</span>
+          <span className="text-black-50">{latestVersion}</span>
         </div>
       </div>
-      <h6>
-        Use dropbox to sync your photos to our platform and share it with
-        others.
-      </h6>
+      <h6>{description}</h6>
       <div className="d-flex justify-content-between install mt-3">
-        <span>Installed 1234 times</span>
-        <span className="text-primary">
-          View&nbsp;<i className="fa fa-angle-right"></i>
-        </span>
+        {/* TODO Add installed aggregator on packages */}
+        <span>Installed {Math.floor(Math.random() * 1000)} times</span>
+        <span className="text-success cursor-pointer" onClick={installPackage}>Install</span>
       </div>
     </div>
   );
