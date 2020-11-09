@@ -8,11 +8,11 @@ import {
 } from "../../constants/apiAuthorizationConstants";
 import FullPageSpinner from "../../components/FullPageSpinner/FullPageSpinner";
 
-type OidcLoginProps = {
+type OidcAuthProps = {
   action: string;
 };
 
-const OidcLogin: React.FC<OidcLoginProps> = ({ action }) => {
+const OidcAuth: React.FC<OidcAuthProps> = ({ action }) => {
   const { login, loginCallback, logoutCallback } = useAuth();
 
   React.useEffect(() => {
@@ -53,4 +53,4 @@ const OidcLogin: React.FC<OidcLoginProps> = ({ action }) => {
   return <FullPageSpinner />;
 };
 
-export default OidcLogin;
+export default OidcAuth;

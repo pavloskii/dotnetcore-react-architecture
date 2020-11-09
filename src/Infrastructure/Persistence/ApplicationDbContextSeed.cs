@@ -56,7 +56,7 @@ namespace FDS.Infrastructure.Persistence
                     PackageId = packageId,
                     LatestVersion = "2.0.1",
                     Description = "Hearing Aids Software",
-                    ImageUrl = "hearing-aids-software.svg",
+                    ImageUrl = "https://github.com/pavloskii/dotnetcore-react-architecture/blob/master/docs/images/hearing-icon.png",
                     Name = "HASoft"
                 });
 
@@ -108,7 +108,7 @@ namespace FDS.Infrastructure.Persistence
                     PackageId = packageId2,
                     LatestVersion = "2.0.0",
                     Description = "Anti-virus Software",
-                    ImageUrl = "anti-virus.svg",
+                    ImageUrl = "https://github.com/pavloskii/dotnetcore-react-architecture/blob/master/docs/images/anti-virus.jpg",
                     Name = "AntiV"
                 });
 
@@ -147,7 +147,7 @@ namespace FDS.Infrastructure.Persistence
                     PackageId = packageId3,
                     LatestVersion = "1.0.0",
                     Description = "Printer drivers",
-                    ImageUrl = "printer-drivers.svg",
+                    ImageUrl = "https://github.com/pavloskii/dotnetcore-react-architecture/blob/master/docs/images/printer-drivers.png",
                     Name = "PrintDriver"
                 });
 
