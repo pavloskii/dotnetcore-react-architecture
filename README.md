@@ -42,6 +42,11 @@ Desktop:
 <img  src="./docs/screenshots/home-screen.png"  alt="application screenshot desktop"  width="250" >
 
 
+## Data Model
+
+<img  src="./docs/images/cosmosdbmodel.png"  alt="cosmosdb data model"  width="250" >
+
+
 ## Resources and Credits
 
 * Robert C. Martin (Uncle Bob) - https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
